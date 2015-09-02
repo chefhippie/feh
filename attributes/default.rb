@@ -24,5 +24,5 @@ default["feh"]["packages"] = %w(
 default["feh"]["zypper"]["enabled"] = true
 default["feh"]["zypper"]["alias"] = "x11-utilities"
 default["feh"]["zypper"]["title"] = "X11 Utilities"
-default["feh"]["zypper"]["repo"] = "http://download.opensuse.org/repositories/X11:/Utilities/openSUSE_#{node["platform_version"]}/"
+default["feh"]["zypper"]["repo"] = "http://download.opensuse.org/repositories/X11:/Utilities/openSUSE_#{node["platform_version"].to_i.to_s == node["platform_version"] ? "Factory" : node["platform_version"]}/"
 default["feh"]["zypper"]["key"] = "#{node["feh"]["zypper"]["repo"]}repodata/repomd.xml.key"
