@@ -21,8 +21,22 @@ default["feh"]["packages"] = %w(
   feh
 )
 
-default["feh"]["zypper"]["enabled"] = true
-default["feh"]["zypper"]["alias"] = "x11-utilities"
-default["feh"]["zypper"]["title"] = "X11 Utilities"
-default["feh"]["zypper"]["repo"] = "http://download.opensuse.org/repositories/X11:/Utilities/openSUSE_#{node["platform_version"].to_i.to_s == node["platform_version"] ? "Factory" : node["platform_version"]}/"
-default["feh"]["zypper"]["key"] = "#{node["feh"]["zypper"]["repo"]}repodata/repomd.xml.key"
+case node["platform_family"]
+when "suse"
+  repo = case node["platform_version"]
+  when /\A13\.\d+\z/
+    "openSUSE_#{node["platform_version"]}"
+  when /\A42\.\d+\z/
+    "openSUSE_Leap_#{node["platform_version"]}"
+  when /\A\d{8}\z/
+    "openSUSE_Factory"
+  else
+    raise "Unsupported SUSE version"
+  end
+
+  default["feh"]["zypper"]["enabled"] = true
+  default["feh"]["zypper"]["alias"] = "x11-utilities"
+  default["feh"]["zypper"]["title"] = "X11 Utilities"
+  default["feh"]["zypper"]["repo"] = "http://download.opensuse.org/repositories/X11:/Utilities/#{repo}/"
+  default["feh"]["zypper"]["key"] = "#{node["feh"]["zypper"]["repo"]}repodata/repomd.xml.key"
+end
